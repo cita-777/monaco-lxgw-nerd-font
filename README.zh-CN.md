@@ -8,6 +8,13 @@ Nerd Font 四种变体，和 `lxgw/LxgwWenKai` 的 LXGW WenKai Mono 中文字形
 生成后的字体保留 Monaco 的英文、编程符号、上游变体自带的连字、Powerline
 和 Nerd Font 图标；中文、CJK 标点、假名、全角字符由 LXGW WenKai Mono 补齐。
 
+## 效果预览
+
+| | |
+| --- | --- |
+| <img src="image.png" alt="Monaco LXGW Nerd Font 预览 1" width="420"> | <img src="image-1.png" alt="Monaco LXGW Nerd Font 预览 2" width="420"> |
+| <img src="image-2.png" alt="Monaco LXGW Nerd Font 预览 3" width="420"> | <img src="image-3.png" alt="Monaco LXGW Nerd Font 预览 4" width="420"> |
+
 ## 下载
 
 到 GitHub Releases 下载最新产物。现在会生成四个 zip，对齐上游的两个维度：
@@ -21,21 +28,6 @@ Nerd Font 四种变体，和 `lxgw/LxgwWenKai` 的 LXGW WenKai Mono 中文字形
 | `MonacoLXGWLigaturizedNerdFontMono.zip` | 是 | 强制单格宽 | 终端也想试连字，但可能有坑 | `Monaco LXGW Ligaturized Nerd Font Mono` |
 
 每个 zip 里都有四个样式：Regular、Bold、Italic、Bold Italic。
-
-## 为什么之前只有一个？
-
-`thep0y/monaco-nerd-font` 的 Release 实际有四个可选包：
-
-| 上游文件 | 是否连字 | Nerd 图标宽度 |
-| --- | --- | --- |
-| `MonacoNerdFont.zip` | 否 | 偏宽/原始宽度 |
-| `MonacoNerdFontMono.zip` | 否 | 强制单格宽 |
-| `MonacoLigaturizedNerdFont.zip` | 是 | 偏宽/原始宽度 |
-| `MonacoLigaturizedNerdFontMono.zip` | 是 | 强制单格宽 |
-
-这个仓库第一版只拉取了 `MonacoLigaturizedNerdFontMono.zip`，所以只生成了一个
-`MonacoLXGWNerdFontMono.zip`。现在构建流程已经改成跟踪全部四个上游 asset，
-并对应生成四个 LXGW 增强版 zip。
 
 ## 本地构建
 

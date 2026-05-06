@@ -10,6 +10,13 @@ selected upstream variant has them, and Nerd Font icons. CJK/fullwidth glyphs ar
 added from LXGW WenKai Mono so Chinese text renders inside the same installable
 font family.
 
+## Preview
+
+| | |
+| --- | --- |
+| <img src="image.png" alt="Monaco LXGW Nerd Font preview 1" width="420"> | <img src="image-1.png" alt="Monaco LXGW Nerd Font preview 2" width="420"> |
+| <img src="image-2.png" alt="Monaco LXGW Nerd Font preview 3" width="420"> | <img src="image-3.png" alt="Monaco LXGW Nerd Font preview 4" width="420"> |
+
 ## Downloads
 
 Download the latest release assets from GitHub Releases. The four packages match
@@ -24,22 +31,6 @@ width original/mono.
 | `MonacoLXGWLigaturizedNerdFontMono.zip` | Yes | Single-cell mono | Terminals that support ligatures, experimental | `Monaco LXGW Ligaturized Nerd Font Mono` |
 
 Each package contains four styles: Regular, Bold, Italic, and Bold Italic.
-
-## Why Four Packages?
-
-The upstream `thep0y/monaco-nerd-font` release ships four zip assets:
-
-| Upstream asset | Ligatures | Nerd icon width |
-| --- | --- | --- |
-| `MonacoNerdFont.zip` | No | Original/proportional |
-| `MonacoNerdFontMono.zip` | No | Single-cell mono |
-| `MonacoLigaturizedNerdFont.zip` | Yes | Original/proportional |
-| `MonacoLigaturizedNerdFontMono.zip` | Yes | Single-cell mono |
-
-The first version of this repository only used
-`MonacoLigaturizedNerdFontMono.zip`, so it produced only one generated package.
-The current build tracks all four upstream assets and emits all four matching
-LXGW-enhanced packages.
 
 ## Build Locally
 
