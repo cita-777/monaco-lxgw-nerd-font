@@ -10,10 +10,13 @@ Nerd Font 四种变体，和 `lxgw/LxgwWenKai` 的 LXGW WenKai Mono 中文字形
 
 ## 效果预览
 
-| | |
-| --- | --- |
-| <img src="image.png" alt="Monaco LXGW Nerd Font 预览 1" width="420"> | <img src="image-1.png" alt="Monaco LXGW Nerd Font 预览 2" width="420"> |
-| <img src="image-2.png" alt="Monaco LXGW Nerd Font 预览 3" width="420"> | <img src="image-3.png" alt="Monaco LXGW Nerd Font 预览 4" width="420"> |
+<img src="image.png" alt="Monaco LXGW Nerd Font 预览 1" width="900">
+
+<img src="image-1.png" alt="Monaco LXGW Nerd Font 预览 2" width="900">
+
+<img src="image-2.png" alt="Monaco LXGW Nerd Font 预览 3" width="900">
+
+<img src="image-3.png" alt="Monaco LXGW Nerd Font 预览 4" width="900">
 
 ## 下载
 

@@ -12,10 +12,13 @@ font family.
 
 ## Preview
 
-| | |
-| --- | --- |
-| <img src="image.png" alt="Monaco LXGW Nerd Font preview 1" width="420"> | <img src="image-1.png" alt="Monaco LXGW Nerd Font preview 2" width="420"> |
-| <img src="image-2.png" alt="Monaco LXGW Nerd Font preview 3" width="420"> | <img src="image-3.png" alt="Monaco LXGW Nerd Font preview 4" width="420"> |
+<img src="image.png" alt="Monaco LXGW Nerd Font preview 1" width="900">
+
+<img src="image-1.png" alt="Monaco LXGW Nerd Font preview 2" width="900">
+
+<img src="image-2.png" alt="Monaco LXGW Nerd Font preview 3" width="900">
+
+<img src="image-3.png" alt="Monaco LXGW Nerd Font preview 4" width="900">
 
 ## Downloads
 
