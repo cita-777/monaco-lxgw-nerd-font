@@ -1,0 +1,16 @@
+{
+  "monaco_nerd_font": {
+    "repo": "thep0y/monaco-nerd-font",
+    "tag": "v0.2.2",
+    "asset": "MonacoLigaturizedNerdFontMono.zip",
+    "url": "https://github.com/thep0y/monaco-nerd-font/releases/download/v0.2.2/MonacoLigaturizedNerdFontMono.zip"
+  },
+  "lxgw_wenkai": {
+    "repo": "lxgw/LxgwWenKai",
+    "tag": "v1.522",
+    "assets": {
+      "LXGWWenKaiMono-Regular.ttf": "https://github.com/lxgw/LxgwWenKai/releases/download/v1.522/LXGWWenKaiMono-Regular.ttf",
+      "LXGWWenKaiMono-Medium.ttf": "https://github.com/lxgw/LxgwWenKai/releases/download/v1.522/LXGWWenKaiMono-Medium.ttf"
+    }
+  }
+}
