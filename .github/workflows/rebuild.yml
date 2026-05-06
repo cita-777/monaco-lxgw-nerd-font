@@ -43,8 +43,8 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: MonacoLXGWNerdFontMono
-          path: dist/MonacoLXGWNerdFontMono.zip
+          name: MonacoLXGWNerdFontBundle
+          path: dist/*.zip
 
       - name: Detect changes
         id: diff
@@ -80,14 +80,18 @@ jobs:
           fi
 
       - name: Create release
-        if: ${{ steps.diff.outputs.changed == 'true' || steps.release.outputs.exists == 'false' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG="${{ steps.release.outputs.tag }}"
           NAME="${{ steps.release.outputs.name }}"
-          if ! git rev-parse "$TAG" >/dev/null 2>&1; then
+          if ! git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1; then
             git tag "$TAG"
             git push origin "$TAG"
           fi
-          gh release create "$TAG" dist/MonacoLXGWNerdFontMono.zip --title "$NAME" --notes "Automated rebuild from upstream font releases."
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release edit "$TAG" --title "$NAME" --notes "Automated rebuild from upstream font releases."
+            gh release upload "$TAG" dist/*.zip --clobber
+          else
+            gh release create "$TAG" dist/*.zip --title "$NAME" --notes "Automated rebuild from upstream font releases."
+          fi

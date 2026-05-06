@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Build Monaco LXGW Nerd Font Mono.
+"""Build Monaco LXGW Nerd Font variants.
 
-The build keeps Latin, ligatures, and Nerd Font glyphs from MonacoLigaturized
-Nerd Font Mono. It adds CJK/fullwidth glyphs from LXGW WenKai Mono so terminal
-icons and Monaco-style ASCII are not overwritten by the Chinese source font.
+The build keeps Latin, ligatures, and Nerd Font glyphs from the selected Monaco
+Nerd Font upstream asset. It adds CJK/fullwidth glyphs from LXGW WenKai Mono so
+terminal icons and Monaco-style ASCII are not overwritten by the Chinese source.
 """
 
 from __future__ import annotations
@@ -11,6 +11,7 @@ from __future__ import annotations
 import copy
 import json
 import re
+import shutil
 from pathlib import Path
 
 from fontTools.misc.fixedTools import otRound
@@ -23,36 +24,68 @@ SOURCES = ROOT / "sources"
 OUT = ROOT / "fonts"
 LOCK = ROOT / "upstream.lock.json"
 
-FAMILY = "Monaco LXGW Nerd Font Mono"
-PS_FAMILY = "MonacoLXGWNerdFontMono"
+VARIANTS = [
+    {
+        "key": "MonacoNerdFont",
+        "source_dir": "MonacoNerdFont",
+        "source_prefix": "MonacoNerdFont",
+        "family": "Monaco LXGW Nerd Font",
+        "ps_family": "MonacoLXGWNerdFont",
+        "zip": "MonacoLXGWNerdFont.zip",
+        "description": "no ligatures, original-width Nerd Font icons",
+    },
+    {
+        "key": "MonacoNerdFontMono",
+        "source_dir": "MonacoNerdFontMono",
+        "source_prefix": "MonacoNerdFontMono",
+        "family": "Monaco LXGW Nerd Font Mono",
+        "ps_family": "MonacoLXGWNerdFontMono",
+        "zip": "MonacoLXGWNerdFontMono.zip",
+        "description": "no ligatures, single-cell Nerd Font icons",
+    },
+    {
+        "key": "MonacoLigaturizedNerdFont",
+        "source_dir": "MonacoLigaturizedNerdFont",
+        "source_prefix": "MonacoLigaturizedNerdFont",
+        "family": "Monaco LXGW Ligaturized Nerd Font",
+        "ps_family": "MonacoLXGWLigaturizedNerdFont",
+        "zip": "MonacoLXGWLigaturizedNerdFont.zip",
+        "description": "ligatures, original-width Nerd Font icons",
+    },
+    {
+        "key": "MonacoLigaturizedNerdFontMono",
+        "source_dir": "MonacoLigaturizedNerdFontMono",
+        "source_prefix": "MonacoLigaturizedNerdFontMono",
+        "family": "Monaco LXGW Ligaturized Nerd Font Mono",
+        "ps_family": "MonacoLXGWLigaturizedNerdFontMono",
+        "zip": "MonacoLXGWLigaturizedNerdFontMono.zip",
+        "description": "ligatures, single-cell Nerd Font icons",
+    },
+]
 
 STYLES = [
     {
         "style": "Regular",
-        "base": "MonacoLigaturizedNerdFontMono-Regular.ttf",
+        "suffix": "Regular",
         "cjk": "LXGWWenKaiMono-Regular.ttf",
-        "file": "MonacoLXGWNerdFontMono-Regular.ttf",
         "ps": "Regular",
     },
     {
         "style": "Bold",
-        "base": "MonacoLigaturizedNerdFontMono-Bold.ttf",
+        "suffix": "Bold",
         "cjk": "LXGWWenKaiMono-Medium.ttf",
-        "file": "MonacoLXGWNerdFontMono-Bold.ttf",
         "ps": "Bold",
     },
     {
         "style": "Italic",
-        "base": "MonacoLigaturizedNerdFontMono-Italic.ttf",
+        "suffix": "Italic",
         "cjk": "LXGWWenKaiMono-Regular.ttf",
-        "file": "MonacoLXGWNerdFontMono-Italic.ttf",
         "ps": "Italic",
     },
     {
         "style": "Bold Italic",
-        "base": "MonacoLigaturizedNerdFontMono-BoldItalic.ttf",
+        "suffix": "BoldItalic",
         "cjk": "LXGWWenKaiMono-Medium.ttf",
-        "file": "MonacoLXGWNerdFontMono-BoldItalic.ttf",
         "ps": "BoldItalic",
     },
 ]
@@ -105,27 +138,29 @@ def build_version() -> str:
     return f"Version 0.1.0; Monaco Nerd Font {monaco}; LXGW WenKai {lxgw}"
 
 
-def set_font_names(font: TTFont, style: str, ps_style: str) -> None:
-    full_name = FAMILY if style == "Regular" else f"{FAMILY} {style}"
-    postscript = f"{PS_FAMILY}-{ps_style}"
+def set_font_names(font: TTFont, variant: dict[str, str], style: dict[str, str]) -> None:
+    family = variant["family"]
+    style_name = style["style"]
+    full_name = family if style_name == "Regular" else f"{family} {style_name}"
+    postscript = f"{variant['ps_family']}-{style['ps']}"
     version = build_version()
     unique = f"{full_name}; {version}"
     values = {
-        1: FAMILY,
-        2: style,
+        1: family,
+        2: style_name,
         3: unique,
         4: full_name,
         5: version,
         6: postscript,
-        16: FAMILY,
-        17: style,
+        16: family,
+        17: style_name,
     }
     name_table = font["name"]
     for name_id, text in values.items():
         name_table.setName(text, name_id, 3, 1, 0x409)
         name_table.setName(text, name_id, 1, 0, 0)
     name_table.setName(
-        "Latin, ligatures, and Nerd Font glyphs from MonacoLigaturized Nerd Font Mono; CJK glyphs from LXGW WenKai Mono.",
+        f"Latin and Nerd Font glyphs from {variant['source_prefix']}; CJK glyphs from LXGW WenKai Mono.",
         10,
         3,
         1,
@@ -201,9 +236,11 @@ def normalize_tables(font: TTFont) -> None:
     font["head"].created = 0
 
 
-def build_one(style_config: dict[str, str]) -> Path:
-    base_path = SOURCES / "MonacoLigaturizedNerdFontMono" / style_config["base"]
-    cjk_path = SOURCES / "LXGWWenKaiMono" / style_config["cjk"]
+def build_one(variant: dict[str, str], style: dict[str, str]) -> Path:
+    input_name = f"{variant['source_prefix']}-{style['suffix']}.ttf"
+    output_name = f"{variant['ps_family']}-{style['suffix']}.ttf"
+    base_path = SOURCES / variant["source_dir"] / input_name
+    cjk_path = SOURCES / "LXGWWenKaiMono" / style["cjk"]
     if not base_path.exists():
         raise SystemExit(f"missing source: {base_path}")
     if not cjk_path.exists():
@@ -213,21 +250,27 @@ def build_one(style_config: dict[str, str]) -> Path:
     cjk = TTFont(cjk_path, recalcBBoxes=True, recalcTimestamp=False)
     name_map = copy_lxgw_glyphs(base, cjk)
     mapped = update_cmaps(base, cjk, name_map)
-    set_font_names(base, style_config["style"], style_config["ps"])
+    set_font_names(base, variant, style)
     normalize_tables(base)
 
-    OUT.mkdir(parents=True, exist_ok=True)
-    output = OUT / style_config["file"]
+    output_dir = OUT / variant["ps_family"]
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output = output_dir / output_name
     base.save(output, reorderTables=True)
-    print(f"built {output.name}: added {len(name_map)} LXGW glyphs, mapped {mapped} CJK codepoints")
+    print(
+        f"built {variant['ps_family']}/{output.name}: "
+        f"added {len(name_map)} LXGW glyphs, mapped {mapped} CJK codepoints"
+    )
     return output
 
 
 def main() -> None:
-    for style in STYLES:
-        build_one(style)
+    if OUT.exists():
+        shutil.rmtree(OUT)
+    for variant in VARIANTS:
+        for style in STYLES:
+            build_one(variant, style)
 
 
 if __name__ == "__main__":
     main()
-

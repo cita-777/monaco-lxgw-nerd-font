@@ -17,7 +17,12 @@ SOURCES = ROOT / "sources"
 LOCK = ROOT / "upstream.lock.json"
 
 MONACO_REPO = "thep0y/monaco-nerd-font"
-MONACO_ASSET = "MonacoLigaturizedNerdFontMono.zip"
+MONACO_ASSETS = {
+    "MonacoNerdFont": "MonacoNerdFont.zip",
+    "MonacoNerdFontMono": "MonacoNerdFontMono.zip",
+    "MonacoLigaturizedNerdFont": "MonacoLigaturizedNerdFont.zip",
+    "MonacoLigaturizedNerdFontMono": "MonacoLigaturizedNerdFontMono.zip",
+}
 LXGW_REPO = "lxgw/LxgwWenKai"
 LXGW_ASSETS = [
     "LXGWWenKaiMono-Regular.ttf",
@@ -64,17 +69,22 @@ def download(url: str, destination: Path) -> None:
 
 
 def fetch_monaco(release: dict) -> None:
-    target = SOURCES / "MonacoLigaturizedNerdFontMono"
-    target.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory() as tmp:
-        archive = Path(tmp) / MONACO_ASSET
-        download(asset_url(release, MONACO_ASSET), archive)
-        with zipfile.ZipFile(archive) as zf:
-            zf.extractall(target)
+    for source_dir, asset_name in MONACO_ASSETS.items():
+        target = SOURCES / source_dir
+        if target.exists():
+            shutil.rmtree(target)
+        target.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / asset_name
+            download(asset_url(release, asset_name), archive)
+            with zipfile.ZipFile(archive) as zf:
+                zf.extractall(target)
 
 
 def fetch_lxgw(release: dict) -> None:
     target = SOURCES / "LXGWWenKaiMono"
+    if target.exists():
+        shutil.rmtree(target)
     target.mkdir(parents=True, exist_ok=True)
     for asset in LXGW_ASSETS:
         download(asset_url(release, asset), target / asset)
@@ -85,8 +95,13 @@ def write_lock(monaco_release: dict, lxgw_release: dict) -> None:
         "monaco_nerd_font": {
             "repo": MONACO_REPO,
             "tag": monaco_release["tag_name"],
-            "asset": MONACO_ASSET,
-            "url": asset_url(monaco_release, MONACO_ASSET),
+            "assets": {
+                source_dir: {
+                    "asset": asset_name,
+                    "url": asset_url(monaco_release, asset_name),
+                }
+                for source_dir, asset_name in MONACO_ASSETS.items()
+            },
         },
         "lxgw_wenkai": {
             "repo": LXGW_REPO,
@@ -111,4 +126,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

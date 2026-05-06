@@ -23,11 +23,10 @@ def main() -> None:
     lxgw = clean(lock["lxgw_wenkai"]["tag"])
     tag = f"monaco-{monaco}-lxgw-{lxgw}"
     if "--name" in sys.argv:
-        print(f"Monaco LXGW Nerd Font Mono ({monaco} + {lxgw})")
+        print(f"Monaco LXGW Nerd Font bundle ({monaco} + {lxgw})")
     else:
         print(tag)
 
 
 if __name__ == "__main__":
     main()
-
