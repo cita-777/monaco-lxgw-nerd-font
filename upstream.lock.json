@@ -1,23 +1,23 @@
 {
   "monaco_nerd_font": {
     "repo": "thep0y/monaco-nerd-font",
-    "tag": "v0.2.2",
+    "tag": "v1.0.0",
     "assets": {
       "MonacoNerdFont": {
         "asset": "MonacoNerdFont.zip",
-        "url": "https://github.com/thep0y/monaco-nerd-font/releases/download/v0.2.2/MonacoNerdFont.zip"
+        "url": "https://github.com/thep0y/monaco-nerd-font/releases/download/v1.0.0/MonacoNerdFont.zip"
       },
       "MonacoNerdFontMono": {
         "asset": "MonacoNerdFontMono.zip",
-        "url": "https://github.com/thep0y/monaco-nerd-font/releases/download/v0.2.2/MonacoNerdFontMono.zip"
+        "url": "https://github.com/thep0y/monaco-nerd-font/releases/download/v1.0.0/MonacoNerdFontMono.zip"
       },
       "MonacoLigaturizedNerdFont": {
         "asset": "MonacoLigaturizedNerdFont.zip",
-        "url": "https://github.com/thep0y/monaco-nerd-font/releases/download/v0.2.2/MonacoLigaturizedNerdFont.zip"
+        "url": "https://github.com/thep0y/monaco-nerd-font/releases/download/v1.0.0/MonacoLigaturizedNerdFont.zip"
       },
       "MonacoLigaturizedNerdFontMono": {
         "asset": "MonacoLigaturizedNerdFontMono.zip",
-        "url": "https://github.com/thep0y/monaco-nerd-font/releases/download/v0.2.2/MonacoLigaturizedNerdFontMono.zip"
+        "url": "https://github.com/thep0y/monaco-nerd-font/releases/download/v1.0.0/MonacoLigaturizedNerdFontMono.zip"
       }
     }
   },
